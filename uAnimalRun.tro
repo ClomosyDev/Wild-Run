@@ -1,0 +1,1342 @@
+var
+ MyForm:TCLGameForm;
+ propPlayerChar, propChickenWing:TclRectangle;
+ land1, land2, cloud1, cloud2, prop1, prop2, propFish, propCarrot, propBanana, propMaterial, propTrash, propWheels, prop3, propChicken , btnJump ,proImg1, GameOverImg, GameWinImg : TClProImage;
+ animPlayerChar, animChickenWing:TclBitmapListAnimation;
+ gameLoop, endTimer, gameOverTimer: TClTimer;
+ up, down,score, SndEat : Integer;
+ isJumped, GameOverBool,callSound : Boolean;
+ GameOverPnl : TclProPanel;
+ 
+ void SelectAnimal;
+ {
+   if (Clomosy.GlobalVariableString == 'bear')
+   {
+      MyForm.SetImage(land1,'ay_1.png');
+      MyForm.SetImage(land2,'ay_1.png');
+      MyForm.SetFormBGImage('/ay.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 906;
+      land1.Width = 1921;
+      land1.Height = 111;
+      land2.Position.X = 1921;
+      land2.Position.Y = 906;
+      land2.Width = 1921;
+      land2.Height = 111;
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 745;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 200;
+
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\beardance_1.png');
+      animPlayerChar.AnimationCount = 6;
+      animPlayerChar.AnimationRowCount = 2;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.75;
+      //animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+      animPlayerChar.Start;
+   }
+   else if (Clomosy.GlobalVariableString == 'dog')
+   {
+      MyForm.SetImage(land1,'kopek.png');
+      MyForm.SetImage(land2,'kopek.png');
+      MyForm.SetFormBGImage('/dog_BackGround.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 718;
+      land1.Width = 1921;
+      land1.Height = 299;
+      land2.Position.X = 1921;
+      land2.Position.Y = 718;
+      land2.Width = 1921;
+      land2.Height = 299;
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 840;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 105;
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\dog.png');
+      animPlayerChar.AnimationCount = 3;
+      animPlayerChar.AnimationRowCount = 1;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.25;
+      animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+      animPlayerChar.Start;
+   }
+   else if (Clomosy.GlobalVariableString == 'rabbit')
+   {
+      MyForm.SetImage(land1,'tavsan.png');
+      MyForm.SetImage(land2,'tavsan.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 765;
+      land1.Width = 1925;
+      land1.Height = 252;
+      land2.Position.X = 1925;
+      land2.Position.Y = 765;
+      land2.Width = 1925;
+      land2.Height = 252;
+      MyForm.SetFormBGImage('/gokyuzu.png');
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 808;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 137;
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\rabbit.png');
+      animPlayerChar.AnimationCount = 3;
+      animPlayerChar.AnimationRowCount = 1;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.25;
+      animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+      animPlayerChar.Start;
+   }
+   else if (Clomosy.GlobalVariableString == 'horse')
+   {
+      MyForm.SetFormBGImage('/at1.png');
+      MyForm.SetImage(land1,'at2.png');
+      MyForm.SetImage(land2,'at2.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 906;
+      land1.Width = 1921;
+      land1.Height = 111;
+      land2.Position.X = 1920;
+      land2.Position.Y = 906;
+      land2.Width = 1921;
+      land2.Height = 111;
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 819;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 126;
+      
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\horse.png');
+      animPlayerChar.AnimationCount = 3;
+      animPlayerChar.AnimationRowCount = 1;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.25;
+      animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+  
+      animPlayerChar.Start;
+   }
+   else if (Clomosy.GlobalVariableString == 'frog')
+   {
+      MyForm.SetFormBGImage('/kurbaga3.png');
+      MyForm.SetImage(land1,'kurbaga2.png');
+      MyForm.SetImage(land2,'kurbaga2.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 841;
+      land1.Width = 1921;
+      land1.Height = 176;
+      land2.Position.X = 1920;
+      land2.Position.Y = 841;
+      land2.Width = 1921;
+      land2.Height = 176;
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 801;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 144;
+      
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\frog.png');
+      animPlayerChar.AnimationCount = 3;
+      animPlayerChar.AnimationRowCount = 1;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.25;
+      animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+  
+      animPlayerChar.Start;
+   }
+   else if (Clomosy.GlobalVariableString == 'penguin')
+   {
+      MyForm.SetFormBGImage('/snow1.png');
+      MyForm.SetImage(land1,'snow2.png');
+      MyForm.SetImage(land2,'snow2.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 877;
+      land1.Width = 1921;
+      land1.Height = 140;
+      land2.Position.X = 1920;
+      land2.Position.Y = 877;
+      land2.Width = 1921;
+      land2.Height = 140;
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 826;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 119;
+      
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\penguin_2.png');
+      animPlayerChar.AnimationCount = 3;
+      animPlayerChar.AnimationRowCount = 1;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.25;
+      animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+  
+      animPlayerChar.Start;
+   }
+   else if (Clomosy.GlobalVariableString == 'squirrel')
+   {  
+      MyForm.SetImage(land1,'sincap2.png');
+      MyForm.SetImage(land2,'sincap2.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 915;
+      land1.Width = 1921;
+      land1.Height = 102;
+      land2.Position.X = 1920;
+      land2.Position.Y = 915;
+      land2.Width = 1921;
+      land2.Height = 102;
+      MyForm.SetFormBGImage('/sincap.png');
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 814;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 131;
+      
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\squirrel.png');
+      animPlayerChar.AnimationCount = 3;
+      animPlayerChar.AnimationRowCount = 1;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.25;
+      animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+  
+      animPlayerChar.Start;
+   }
+   else if (Clomosy.GlobalVariableString == 'crocodile')
+   {
+      MyForm.SetFormBGImage('/timsah2.png');
+      MyForm.SetImage(land1,'timsah.png');
+      MyForm.SetImage(land2,'timsah.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 856;
+      land1.Width = 1921;
+      land1.Height = 161;
+      land2.Position.X = 1920;
+      land2.Position.Y = 856;
+      land2.Width = 1921;
+      land2.Height = 161;
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 781;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 164;
+      
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\crocodile.png');
+      animPlayerChar.AnimationCount = 3;
+      animPlayerChar.AnimationRowCount = 1;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.25;
+      animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+  
+      animPlayerChar.Start;
+   }
+    else if (Clomosy.GlobalVariableString == 'cat')
+   {
+      MyForm.SetFormBGImage('/cat_background.png');
+      MyForm.SetImage(land1,'kopek.png');
+      MyForm.SetImage(land2,'kopek.png');
+      land1.Position.X = 0;
+      land1.Position.Y = 718;
+      land1.Width = 1921;
+      land1.Height = 299;
+      land2.Position.X = 1921;
+      land2.Position.Y = 718;
+      land2.Width = 1921;
+      land2.Height = 299;
+      propPlayerChar.Position.X = 100;
+      propPlayerChar.Position.Y = 840;
+      propPlayerChar.Width = 200;
+      propPlayerChar.Height = 105;
+      
+      animPlayerChar = MyForm.AddNewBitmapListAnimation(propPlayerChar,'animPlayerChar');
+      animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\cat1.png');
+      animPlayerChar.AnimationCount = 3;
+      animPlayerChar.AnimationRowCount = 1;
+      animPlayerChar.Delay = 0;
+      animPlayerChar.Duration = 0.25;
+      animPlayerChar.AutoReverse = True;
+      animPlayerChar.Enabled = True;
+      animPlayerChar.Loop = True;
+      animPlayerChar.Start;
+   }
+ }
+ 
+ void SetRndPropAsset(AProp:TClProImage);
+ {
+  case (clMath.GenerateRandom(0,10)) of
+  {
+    0:
+    {
+      MyForm.SetImage(AProp,'chicken_1.png');
+      AProp.CLTagInt = 0;
+    }
+    1:
+    {
+      MyForm.SetImage(AProp,'meat_1.png');
+      AProp.CLTagInt = 1;
+    }
+    2:
+    {
+      MyForm.SetImage(AProp,'apple_1.png');
+      AProp.CLTagInt = 2;
+    }
+    3:
+    {
+      MyForm.SetImage(AProp,'slipper_1.png');
+      AProp.CLTagInt = 3;
+    }
+    4:
+    {
+      MyForm.SetImage(AProp,'trash_1.png');
+      AProp.CLTagInt = 4;
+    }
+    5:
+    {
+      MyForm.SetImage(AProp,'wheels_1.png');
+      AProp.CLTagInt = 5;
+    }
+    6:
+    {
+      MyForm.SetImage(AProp,'material_1.png');
+      AProp.CLTagInt = 6;
+    }
+    7:
+    {
+      MyForm.SetImage(AProp,'banana_1.png');
+      AProp.CLTagInt = 7;
+    }
+    8:
+    {
+      MyForm.SetImage(AProp,'carrot_1.png');
+      AProp.CLTagInt = 8;
+    }
+    9:
+    {
+      MyForm.SetImage(AProp,'fish_1.png');
+      AProp.CLTagInt = 9;
+    }
+  }
+ }
+
+void SetRndPropPosition(AProp:TClProImage);
+{
+  case (clMath.GenerateRandom(0,2)) of
+  {
+    0:
+    {
+      AProp.Position.X=1950;
+      AProp.Position.y=850;
+      SetRndPropAsset(AProp);
+      AProp.Visible = True;
+    }
+    1:
+    {
+      AProp.Position.X=1950;
+      AProp.Position.y=600;
+      SetRndPropAsset(AProp);
+      AProp.Visible = True;
+    }
+  }
+}
+
+void SelectRndProp;
+{
+  case (clMath.GenerateRandom(1,4)) of
+  {
+    1:
+    {
+      if Not(prop1.Visible)
+      {
+        SetRndPropPosition(prop1);
+      }
+    }
+    2:
+    {
+      if Not(prop2.Visible)
+      {
+        SetRndPropPosition(prop2);
+      }
+    }
+    3:
+    {
+      if Not(prop3.Visible)
+      {
+        SetRndPropPosition(prop3);
+      }
+    }
+  }
+}
+
+  void GameOver;
+  {
+    prop1.Visible = False;
+    prop2.Visible = False;
+    prop3.Visible = False;
+    GameOverBool = True;
+  }
+  
+  void EndGameTimer;   // Win game end
+  var
+    winSound : Integer;
+  {
+    if (endTimer.Interval == 1)
+    {
+      if (not (callSound))
+      {
+      winSound = MyForm.RegisterSound('trumpet.wav');
+      MyForm.PlayGameSound(winSound);
+      callSound = True;
+      }
+      case (Clomosy.GlobalVariableString) of
+      {
+        'bear':
+        {
+          if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\beardance.png');
+            animPlayerChar.AnimationCount = 12;
+            animPlayerChar.AnimationRowCount = 4;
+            animPlayerChar.Start;
+          }
+        }
+        'dog':
+        {
+          if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            propPlayerChar.Position.Y = 745;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\dogdance.png');
+            animPlayerChar.AnimationCount = 18;
+            animPlayerChar.AnimationRowCount = 6;
+            animPlayerChar.Duration = 0.75;
+            animPlayerChar.Start;
+          
+          }
+        }
+        'frog':
+        {
+          if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            propPlayerChar.Position.Y = 745;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\frogdance.png');
+            animPlayerChar.AnimationCount = 18;
+            animPlayerChar.AnimationRowCount = 6;
+            animPlayerChar.Duration = 0.75;
+            animPlayerChar.Start;
+          }
+        }
+        'horse':
+        {
+          if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            propPlayerChar.Position.Y = 745;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\horsedance.png');
+            animPlayerChar.AnimationCount = 18;
+            animPlayerChar.AnimationRowCount = 6;
+            animPlayerChar.Duration = 0.75;
+            animPlayerChar.Start;
+          }
+        }
+        'rabbit':
+        {
+         if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            propPlayerChar.Position.Y = 745;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\rabbitdance.png');
+            animPlayerChar.AnimationCount = 18;
+            animPlayerChar.AnimationRowCount = 6;
+            animPlayerChar.Duration = 0.75;
+            animPlayerChar.Start;
+          }
+        }
+        'penguin':
+        {
+          if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            propPlayerChar.Position.Y = 745;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\penguindance.png');
+            animPlayerChar.AnimationCount = 3;
+            animPlayerChar.AnimationRowCount = 1;
+            animPlayerChar.Start;
+          }
+        }
+        'squirrel':
+        {
+          if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            propPlayerChar.Position.Y = 745;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\sincapdans.png');
+            animPlayerChar.AnimationCount = 18;
+            animPlayerChar.AnimationRowCount = 6;
+            animPlayerChar.Duration = 0.75;
+            animPlayerChar.Start;
+          }
+        }
+        'crocodile':
+        {
+          if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\crocodiledance.png');
+            animPlayerChar.AnimationCount = 12;
+            animPlayerChar.AnimationRowCount = 4;
+            animPlayerChar.Start;
+          }
+        }
+        'cat':
+        {
+          if (propPlayerChar.Position.X < 860)
+          {
+            propPlayerChar.Position.X = propPlayerChar.Position.X + 8;
+            GameWinImg.Visible = True;
+            MyForm.SetImage(GameWinImg, 'win.png');
+            GameWinImg.Position.X = GameWinImg.Position.X - 16;
+            GameWinImg.Position.Y = GameWinImg.Position.Y - 9;
+            GameWinImg.Width = GameWinImg.Width + 32;
+            GameWinImg.Height = GameWinImg.Height + 18;
+          }
+          else
+          {
+            endTimer.Interval = 5000; //You can enable it if you don't use a time trigger when calling AddNewTimer.
+            propPlayerChar.Width = 200;
+            propPlayerChar.Height = 200;
+            propPlayerChar.Position.Y = 745;
+            animPlayerChar.Stop;
+            animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\catdance.png');
+            animPlayerChar.AnimationCount = 12;
+            animPlayerChar.AnimationRowCount = 4;
+            animPlayerChar.Duration = 0.75;
+            animPlayerChar.Start;
+          }
+        }
+      }
+    }
+    else
+    {
+      clDoClick(callBackLyt);
+      MyForm.Free;
+    }
+  }
+  
+  void EndGame;
+  {
+  case (Clomosy.GlobalVariableString) of
+    {
+      'bear':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\beardance_1.png');
+        animPlayerChar.AnimationCount = 6;
+        animPlayerChar.AnimationRowCount = 2;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 745;
+      }
+      'dog':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\dog.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 840;
+      }
+      'frog':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\frog.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 801;
+      }
+      'horse':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\horse.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 819;
+      }
+      'rabbit':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\rabbit.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 808;
+      }
+      'penguin':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\penguin_2.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 826;
+      }
+      'squirrel':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\squirrel.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 814;
+      }
+      'crocodile':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\crocodile.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 781;
+      }
+      'cat':
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\cat1.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+        propPlayerChar.Position.Y = 840;
+      }
+    }
+    prop1.Visible = False;
+    prop2.Visible = False;
+    prop3.Visible = False;
+    gameLoop.Enabled = False;
+    endTimer = MyForm.AddNewTimer(MyForm,'endTimer',1); // the action is triggered every 1 second.
+    endTimer.Enabled  = True; //If True start timer
+    MyForm.AddNewEvent(endTimer,tbeOnTimer,'EndGameTimer'); // Calls timerShow Procedure
+  }
+
+  void SetScore(AProp:TClProImage);
+  { 
+    MyForm.PlayGameSound(SndEat);
+    case AProp.CLTagInt of
+    {
+      0,1,2,7,8,9:Inc(score);
+      3,4,5,6:Dec(score);
+    }
+    case score of
+    {
+      0:
+      {
+        GameOver;
+      }
+      1:
+      {
+        MyForm.SetImage(proImg1, '1_1.png');
+      }
+      2:
+      {
+        MyForm.SetImage(proImg1, '2_1.png');
+      }
+      3:
+      {
+        MyForm.SetImage(proImg1, '3_1.png');
+      }
+      4:
+      {
+        MyForm.SetImage(proImg1, '4_1.png');
+      }
+      5:
+      {
+        MyForm.SetImage(proImg1, '5_1.png');
+      }
+      6:
+      {
+        MyForm.SetImage(proImg1, '6.png');
+      }
+      7:
+      {
+        MyForm.SetImage(proImg1, '7.png');
+      }
+      8:
+      {
+        MyForm.SetImage(proImg1, '8.png');
+        EndGame;
+      }
+    }
+  }
+
+void JumpAnim;
+{
+  case (Clomosy.GlobalVariableString) of
+  {
+    'bear':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\bear1.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.AnimationRowCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\beardance_1.png');
+        animPlayerChar.AnimationCount = 6;
+        animPlayerChar.AnimationRowCount = 2;
+        animPlayerChar.Start;
+      }
+    }
+    'dog':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\dog1.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\dog.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+      }
+    }
+    'frog':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\frog1.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\frog.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+      }
+    }
+    'horse':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\horse1.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\horse.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+      }
+    }
+    'rabbit':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\rabbit1.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\rabbit.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+      }
+    }
+    'penguin':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\penguin1.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\penguin_2.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+      }
+    }
+    'squirrel':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\squirrel1.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\squirrel.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+      }
+    }
+    'crocodile':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\crocodile1.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\crocodile.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+      }
+    }
+    'cat':
+    {
+      if (isJumped)
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\cat2.png');
+        animPlayerChar.AnimationCount = 1;
+        animPlayerChar.Start;
+      }
+      else
+      {
+        animPlayerChar.Stop;
+        animPlayerChar.AnimationBitmap.LoadFromFile(clomosy.appfilespath + '\cat1.png');
+        animPlayerChar.AnimationCount = 3;
+        animPlayerChar.Start;
+      }
+    }
+  }
+}
+  
+void timerShow;  
+var
+  loseSound : Integer;
+{
+  MyForm.ClSetCaption(IntToStr(Score));
+  if ((land1.Position.X + land1.Width) > 0)
+  {
+    land1.Position.X = land1.Position.X - 8;
+  }
+  else
+  {
+    land1.Position.X = land2.Position.X + land2.Width - 9;
+  }
+  if ((land2.Position.X + land2.Width) > 0)
+  {
+    land2.Position.X = land2.Position.X - 8;
+  }
+  else
+  {
+    land2.Position.X = land1.Position.X + land1.Width - 9;
+  }
+  if ((cloud1.Position.X + cloud1.Width) > 0)
+  {
+    cloud1.Position.X = cloud1.Position.X - 2;
+  }
+  else
+  {
+    cloud1.Position.X = cloud2.Position.X + cloud2.Width - 5;
+  }
+  if ((cloud2.Position.X + cloud2.Width) > 0)
+  {
+    cloud2.Position.X = cloud2.Position.X - 2;
+  }
+  else
+  {
+    cloud2.Position.X = cloud1.Position.X + cloud1.Width - 5;
+  }
+  if (isJumped)
+  {
+    if (up <33)
+    {
+      propPlayerChar.Position.Y = propPlayerChar.Position.Y - 8;
+      Inc(up);
+    }
+    else if (down < 33)
+    {
+      propPlayerChar.Position.Y = propPlayerChar.Position.Y + 8;
+      Inc(down);
+    }
+    else if ((up==33) && (down==33))
+    {
+      isJumped = False;
+      up = 0;
+      down = 0;
+      JumpAnim;
+    }
+  }
+  if (prop1.Position.X > -200)
+  {
+    prop1.Position.X = prop1.Position.X -8;
+  }
+  else
+  {
+    prop1.Visible = False;
+    SelectRndProp;
+  }
+  if (prop2.Position.X > -200)
+  {
+    prop2.Position.X = prop2.Position.X -8;
+  }
+  else
+  {
+    prop2.Visible = False;
+    SelectRndProp;
+  }
+  if (prop3.Position.X > -200)
+  {
+    prop3.Position.X = prop3.Position.X -8;
+  }
+  else
+  {
+    prop3.Visible = False;
+    SelectRndProp;
+  }
+  if (prop1.Visible)
+  {
+    if MyForm.clIsIntersectsWith(propPlayerChar, prop1) 
+    {
+      SetScore(prop1);
+      prop1.Visible = False;
+      SelectRndProp;
+    }
+  }
+  if prop2.Visible
+  {
+    if MyForm.clIsIntersectsWith(propPlayerChar, prop2) 
+    {
+      SetScore(prop2);
+      prop2.Visible = False;
+      SelectRndProp;
+    }
+  }
+  if prop3.Visible
+  {
+    if MyForm.clIsIntersectsWith(propPlayerChar, prop3) 
+    {
+      SetScore(prop3);
+      prop3.Visible = False;
+      SelectRndProp;
+    }
+  }
+  if (GameOverBool)
+  {
+    if (propPlayerChar.Position.X > -250)
+    {
+      propPlayerChar.Position.X = propPlayerChar.Position.X - 8;
+      GameOverImg.Visible = True;
+      MyForm.SetImage(GameOverImg, 'gameover.png');
+      GameOverImg.Position.X = GameOverImg.Position.X - 16;
+      GameOverImg.Position.Y = GameOverImg.Position.Y - 9;
+      GameOverImg.Width = GameOverImg.Width + 32;
+      GameOverImg.Height = GameOverImg.Height + 18;
+      
+      if (not (callSound))
+      {
+      loseSound = MyForm.RegisterSound('saxophone.wav');
+      MyForm.PlayGameSound(loseSound);
+      callSound = True;
+      }
+        
+      }
+    else if ((propPlayerChar.Position.X > -260) && (propPlayerChar.Position.X < -250))
+    {
+      propPlayerChar.Position.X = propPlayerChar.Position.X - 50;
+      gameLoop.Interval = 3000;
+    }
+    else
+    {
+      
+      clDoClick(callBackLyt);   // Lose game end
+      MyForm.Free;
+    }
+  }
+}
+  
+void Jump;
+{
+  
+  case (Clomosy.GlobalVariableString) of
+  {
+    'bear':
+    {
+      if (propPlayerChar.Position.Y == 745)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+    }
+    'dog':
+    {
+      if (propPlayerChar.Position.Y == 840)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+    }
+    'frog':
+    {
+      if (propPlayerChar.Position.Y == 801)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+    }
+    'horse':
+    {
+      if (propPlayerChar.Position.Y == 819)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+    }
+    'rabbit':
+    {
+      if (propPlayerChar.Position.Y == 808)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+    }
+    'penguin':
+    {
+      if (propPlayerChar.Position.Y == 826)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+    }
+    'squirrel':
+    {
+      if (propPlayerChar.Position.Y == 814)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+
+    }
+    'crocodile':
+    {
+      if (propPlayerChar.Position.Y == 781)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+    }
+    'cat':
+    {
+      if (propPlayerChar.Position.Y == 840)
+      {
+        isJumped = True;
+        up = 0;
+        down = 0;
+        JumpAnim;
+      }
+    }
+  }
+  
+}
+
+
+
+void MyFormOnKeyDown;
+{
+  if (MyForm.FIsVKSpacePressing)
+  {
+    Jump;
+  }
+}
+
+{
+  MyForm = TCLGameForm.Create(Self);
+  
+  score = 0;
+  
+  callSound = False;
+  
+  MyForm.SetFormBGImage('/gokyuzu.png');
+  
+  ClRTSetProperty(MyForm,'ClientWidth',1920);
+  ClRTSetProperty(MyForm,'ClientHeight',1080);
+  
+  SndEat = MyForm.RegisterSound('eatingSounds.wav');
+  MyForm.SoundIsActive=True;
+  
+  isJumped = False;
+  
+  land1 = MyForm.AddNewProImage(MyForm,'land1');
+  clComponent.SetupComponent(land1,'{"ImgFit":"yes"}');
+  MyForm.SetImage(land1,'zemin1.png');
+  land1.Align = alNone;
+  land1.Position.X = 0;
+  land1.Position.Y = 930;
+  land1.Width = 2212;
+  land1.Height = 87;
+  
+   land2 = MyForm.AddNewProImage(MyForm,'land2');
+  clComponent.SetupComponent(land2,'{"ImgFit":"yes"}');
+  MyForm.SetImage(land2,'zemin1.png');
+  land2.Align = alNone;
+  land2.Position.X = 2212;
+  land2.Position.Y = 930;
+  land2.Width = 2212;
+  land2.Height = 87;
+  
+  cloud1 = MyForm.AddNewProImage(MyForm,'cloud1');
+  clComponent.SetupComponent(cloud1,'{"ImgFit":"yes"}');
+  MyForm.SetImage(cloud1,'bulutlar.png');
+  cloud1.Align = alNone;
+  cloud1.Position.X = 5634;
+  cloud1.Position.Y = 100;
+  cloud1.Width = 5634;
+  cloud1.Height = 371;
+  
+  cloud2 = MyForm.AddNewProImage(MyForm,'cloud2');
+  clComponent.SetupComponent(cloud2,'{"ImgFit":"yes"}');
+  MyForm.SetImage(cloud2,'bulutlar.png');
+  cloud2.Align = alNone;
+  cloud2.Position.X = 0;
+  cloud2.Position.Y = 100;
+  cloud2.Width = 5634;
+  cloud2.Height = 371;
+  
+  propPlayerChar = MyForm.AddNewRectangle(MyForm,'propPlayerChar');
+  propPlayerChar.Fill.Kind = fbkBitmap;
+  propPlayerChar.Fill.Bitmap.WrapMode = fbwmTileOriginal;
+  propPlayerChar.Align = alNone;
+  propPlayerChar.Position.X = 100;
+  propPlayerChar.Position.Y = 840;
+  propPlayerChar.Width = 200;
+  propPlayerChar.Height = 105;
+  propPlayerChar.Sides = SetOf([]);//hepsini kapatmak
+  
+  SelectAnimal;
+  
+  prop1 = MyForm.AddNewProImage(MyForm,'prop1');
+  clComponent.SetupComponent(prop1,'{"ImgFit":"yes"}');
+  MyForm.SetImage(prop1,'meat_1.png');
+  prop1.CLTagInt = 1;
+  prop1.Align = alNone;
+  prop1.Position.X = 1920;
+  prop1.Position.Y = 600;
+  prop1.Width = 75;
+  prop1.Height = 75;
+  prop1.Visible = True;
+  
+  prop2 = MyForm.AddNewProImage(MyForm,'prop2');
+  clComponent.SetupComponent(prop2,'{"ImgFit":"yes"}');
+  MyForm.SetImage(prop2,'apple_1.png');
+  prop2.CLTagInt = 2;
+  prop2.Align = alNone;
+  prop2.Position.X = 3000;
+  prop2.Position.Y = 850;
+  prop2.Width = 75;
+  prop2.Height = 75;
+  prop2.Visible = True;
+  
+  prop3 = MyForm.AddNewProImage(MyForm,'prop3');
+  clComponent.SetupComponent(prop3,'{"ImgFit":"yes"}');
+  MyForm.SetImage(prop3,'slipper_1.png');
+  prop3.CLTagInt = 3;
+  prop3.Align = alNone;
+  prop3.Position.X = 4000;
+  prop3.Position.Y = 600;
+  prop3.Width = 75;
+  prop3.Height = 75;
+  prop3.Visible = True;
+  
+  score = 3;
+  
+  proImg1 = MyForm.AddNewProImage(MyForm,'proImg1');
+  clComponent.SetupComponent(proImg1,'{"Align" : "None", "ImgFit":"yes"}');
+  MyForm.SetImage(proImg1, '3_1.png');
+  proImg1.Width = 130;
+  proImg1.Height = 442;
+  proImg1.Position.X = 50;
+  proImg1.Position.Y = MyForm.clHeight/8;
+
+  btnJump = MyForm.AddNewProImage(MyForm,'btnJump');
+  clComponent.SetupComponent(btnJump,'{"Align" : "None", "ImgFit":"yes"}');
+  MyForm.SetImage(btnJump, 'jump_1.png');
+  btnJump.Width = 164;
+  btnJump.Height = 151;
+  btnJump.Position.X = MyForm.ClWidth - 214;
+  btnJump.Position.Y = MyForm.clHeight/2;
+  MyForm.AddNewEvent(btnJump,tbeOnClick, 'Jump');
+
+  GameWinImg = MyForm.AddNewProImage(MyForm,'GameWinImg');
+  clComponent.SetupComponent(GameWinImg,'{"Align" : "None"}');  
+  GameWinImg.Position.X = 960;
+  GameWinImg.Position.Y = 540;
+  GameWinImg.Width = 0;
+  GameWinImg.Height = 0;
+  GameWinImg.Visible = False;
+  
+  GameOverImg = MyForm.AddNewProImage(MyForm,'GameOverImg');
+  clComponent.SetupComponent(GameOverImg,'{"Align" : "None"}');
+  GameOverImg.Position.X = 960;
+  GameOverImg.Position.Y = 540;
+  GameOverImg.Width = 0;
+  GameOverImg.Height = 0;
+  GameOverImg.Visible = False;
+  GameOverBool = False;
+
+  MyForm.AddNewEvent(MyForm, tbeOnKeyDown,'MyFormOnKeyDown');
+  
+  gameLoop = MyForm.AddNewTimer(MyForm,'gameLoop',1); // the action is triggered every 1 second.
+  MyForm.AddNewEvent(gameLoop,tbeOnTimer,'timerShow'); // Calls timerShow Procedure
+  gameLoop.Enabled = True; //If True start timer
+  
+  
+  MyForm.Run;
+}

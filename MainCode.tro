@@ -1,0 +1,70 @@
+Var   
+MyForm:TclGameForm;
+startBtn,infBtn,btnExit : TClProButton;
+infLayout,btnLayout,btnExitLayout : TclLayout;
+infoImg : TclProButton;
+
+void StartBtnOnClick;
+{
+  startBtn.Enabled = False;
+  Clomosy.RunUnit('uAnimalSelect');
+}
+
+void MyFormOnKeyDown;
+{
+  if (startBtn.Enabled)
+  {
+    if (MyForm.FIsVKSpacePressing)
+    {
+      StartBtnOnClick;
+    }
+  }
+}
+
+void BtnOnExit;
+{
+ infoImg.Visible = False;
+}
+
+void InfBtnOnClick;
+{
+  infoImg.Visible = True;
+}
+
+
+{
+  MyForm = TclGameForm.Create(Self);
+  MyForm.SetFormBGImage('https://media.discordapp.net/attachments/1200524086187663421/1200797596038484008/bg2.png');
+  MyForm.AddNewEvent(MyForm, tbeOnKeyDown,'MyFormOnKeyDown');
+  
+  ClRTSetProperty(MyForm,'ClientWidth',1920);
+  ClRTSetProperty(MyForm,'ClientHeight',1010)
+  
+  btnLayout=MyForm.AddNewLayout(MyForm,'btnLayout');
+  btnLayout.Align=alTop;
+  btnLayout.Height = 100;
+  btnLayout.Margins.Left = 20;
+  btnLayout.Margins.Top = 20;
+  
+  infBtn = MyForm.AddNewProButton(btnLayout,'infBtn','');
+  clComponent.SetupComponent(infBtn,'{"caption":"I","Align":"left"}');
+  MyForm.SetImage(infBtn,'https://media.discordapp.net/attachments/1200524086187663421/1200803475429273671/i.png')
+  MyForm.AddNewEvent(infBtn,tbeOnClick,'InfBtnOnClick');
+  
+  startBtn = MyForm.AddNewProButton(MyForm,'startBtn','');
+  clComponent.SetupComponent(startBtn,'{ "Align" : "Bottom","MarginBottom":200,"Width" :400, "imgFit":"Yes",
+  "Height":210,"BackgroundColor":"null"}');
+  
+  MyForm.SetImage(startBtn,'https://media.discordapp.net/attachments/1200524086187663421/1200797596755705986/start.png'); 
+  MyForm.AddNewEvent(startBtn,tbeOnClick,'StartBtnOnClick');
+  
+  infoImg = MyForm.AddNewProImage(MyForm,'infoImg');
+  clComponent.SetupComponent(infoImg,'{"Align" : "Client"}');
+  infoImg.Height = 500;
+  infoImg.Width = 1000;
+  MyForm.SetImage(infoImg,'https://cdn.discordapp.com/attachments/1200524086187663421/1200815988006981652/bildirim3_1.png');
+  infoImg.Visible= False;
+
+  MyForm.AddNewEvent(infoImg,tbeOnClick,'BtnOnExit');
+  MyForm.RunModal;
+}

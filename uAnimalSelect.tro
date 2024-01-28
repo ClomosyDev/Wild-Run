@@ -1,0 +1,567 @@
+var
+MyForm : TclGameForm;
+
+bear, dog, rabbit, horse, frog, penguin,squirrel,crocodile,cat,cloneBear,
+cloneRabbit,cloneCrocodile,cloneFrog,platformImg,downArrow,showAnimalImg: TClProImage;
+
+selectBtn: TClProButton;
+topLyt,bottomLyt,callBackLyt : TclLayout;
+showAnimalImgCreate : Boolean;
+animalLoopTimer,GetTimer: TClTimer;
+
+MyLoadingForm:TclGameForm;
+  loadingPnl : TclProPanel;
+  loadingLbl : TClProLabel;
+  loadingTmr: TClTimer; 
+  tickCount:integer;
+
+void AnimalLoop( AAnimalImg : TClProImage);
+var
+  speed : Integer;
+{
+  speed = 2;
+  
+  if (AAnimalImg.Position.X < MyForm.ClWidth*(1/6))
+  {
+    AAnimalImg.Position.X = AAnimalImg.Position.X + (3*speed);
+    AAnimalImg.Position.Y = AAnimalImg.Position.Y - (3*speed);
+  }
+  else if ((AAnimalImg.Position.X >= MyForm.ClWidth*(1/6)) && (AAnimalImg.Position.X < MyForm.ClWidth*(2/6)))
+  {
+    AAnimalImg.Position.X = AAnimalImg.Position.X + (3*speed);
+    AAnimalImg.Position.Y = AAnimalImg.Position.Y - (1*speed);
+  }
+  else if ((AAnimalImg.Position.X >= MyForm.ClWidth*(2/6)) && (AAnimalImg.Position.X < MyForm.ClWidth*(3/6)))
+  {
+    AAnimalImg.Position.X = AAnimalImg.Position.X + (3*speed);
+  }
+  else if ((AAnimalImg.Position.X >= MyForm.ClWidth*(3/6)) && (AAnimalImg.Position.X < MyForm.ClWidth*(4/6)))
+  {
+    AAnimalImg.Position.X = AAnimalImg.Position.X + (3*speed);
+  }
+  else if ((AAnimalImg.Position.X >= MyForm.ClWidth*(4/6)) && (AAnimalImg.Position.X < MyForm.ClWidth*(5/6)))
+  {
+    AAnimalImg.Position.X = AAnimalImg.Position.X + (3*speed);
+    AAnimalImg.Position.Y = AAnimalImg.Position.Y + (1*speed);
+  }
+  else if ((AAnimalImg.Position.X >= MyForm.ClWidth*(5/6)) && (AAnimalImg.Position.X <= MyForm.ClWidth*(6/6) - 50 ))
+  {
+    AAnimalImg.Position.X = AAnimalImg.Position.X + (3*speed);
+    AAnimalImg.Position.Y = AAnimalImg.Position.Y + (3*speed);
+  }
+  else
+  {
+    AAnimalImg.Position.X = 0;
+    AAnimalImg.Position.Y = (MyForm.ClHeight / 2) + 50;
+  }
+}
+
+void selectBtnOnClick;
+var
+  arrowPoint,animalSound : Integer;
+  MyUnit : TclUnit;
+{
+  animalSound = 0;
+  MyUnit = TclUnit.Create;
+  if (not(showAnimalImgCreate))
+  {
+    showAnimalImgCreate = True;
+    showAnimalImg = MyForm.AddNewProImage(MyForm,'showAnimalImg');
+    showAnimalImg.Align = alNone;
+    showAnimalImg.Height = 200;
+    showAnimalImg.Width = 200;
+    showAnimalImg.Position.X = 860;
+    showAnimalImg.Position.Y = 270;
+  }
+  arrowPoint = downArrow.Position.X + (downArrow.Width/2);
+  if ( (arrowPoint > (bear.Position.X) ) && (arrowPoint < (bear.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'bear2.png');
+    showAnimalImg.Align = alNone;
+    showAnimalImg.Height = 200;
+    showAnimalImg.Width = 200;
+    Clomosy.GlobalVariableString = 'bear';
+    
+    animalSound = MyForm.RegisterSound('bear.wav');
+    MyForm.PlayGameSound(animalSound);
+    
+    MyUnit.UnitName = 'uAnimalRun';
+    MyUnit.CallerForm = MyForm;
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (dog.Position.X) ) && (arrowPoint < (dog.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'dog2.png');
+    Clomosy.GlobalVariableString = 'dog';
+    animalSound = MyForm.RegisterSound('dog.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (rabbit.Position.X) ) && (arrowPoint < (rabbit.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'rabbit2.png');
+    Clomosy.GlobalVariableString = 'rabbit';
+    
+    animalSound = MyForm.RegisterSound('rabbit.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (horse.Position.X) ) && (arrowPoint < (horse.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'horse2.png');
+    Clomosy.GlobalVariableString = 'horse';
+    
+    animalSound = MyForm.RegisterSound('horse.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (frog.Position.X) ) && (arrowPoint < (frog.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'frog2.png');
+    Clomosy.GlobalVariableString = 'frog';
+    
+    animalSound = MyForm.RegisterSound('frog.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (penguin.Position.X) ) && (arrowPoint < (penguin.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'penguin2.png');
+    Clomosy.GlobalVariableString = 'penguin';
+    
+    animalSound = MyForm.RegisterSound('penguin.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (squirrel.Position.X) ) && (arrowPoint < (squirrel.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'squirrel2.png');
+    Clomosy.GlobalVariableString = 'squirrel';
+    
+    animalSound = MyForm.RegisterSound('squirrel.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (crocodile.Position.X) ) && (arrowPoint < (crocodile.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'crocodile2.png');
+    Clomosy.GlobalVariableString = 'crocodile';
+    
+    animalSound = MyForm.RegisterSound('aligator.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (cat.Position.X) ) && (arrowPoint < (cat.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'cat_2.png');
+    Clomosy.GlobalVariableString = 'cat';
+    
+    animalSound = MyForm.RegisterSound('cat.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (cloneBear.Position.X) ) && (arrowPoint < (cloneBear.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'bear2.png');
+    Clomosy.GlobalVariableString = 'bear';
+    
+    animalSound = MyForm.RegisterSound('Bear.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (clonerabbit.Position.X) ) && (arrowPoint < (clonerabbit.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'rabbit2.png');
+    Clomosy.GlobalVariableString = 'rabbit';
+    
+    animalSound = MyForm.RegisterSound('rabbit.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+  else if ( (arrowPoint > (cloneCrocodile.Position.X) ) && (arrowPoint < (cloneCrocodile.Position.X + 100))
+  {
+    animalLoopTimer.Enabled = False;
+    MyForm.setImage(showAnimalImg,'crocodile2.png');
+    Clomosy.GlobalVariableString = 'crocodile';
+    
+    animalSound = MyForm.RegisterSound('aligator.wav');
+    MyForm.PlayGameSound(animalSound);
+    MyUnit.UnitName = 'uAnimalRun';     
+    MyUnit.CallerForm = MyForm;     
+    MyUnit.Run;
+  }
+}
+
+void MyFormOnKeyDown;
+{
+  if (MyForm.FIsVKSpacePressing)
+  {
+   selectBtnOnClick; 
+  }
+}
+
+void timerShow;
+{
+  AnimalLoop(bear);
+  AnimalLoop(dog);
+  AnimalLoop(rabbit);
+  AnimalLoop(horse);
+  AnimalLoop(frog);
+  AnimalLoop(penguin);
+  AnimalLoop(squirrel);
+  AnimalLoop(crocodile);
+  AnimalLoop(cat);
+  AnimalLoop(cloneBear);
+  AnimalLoop(cloneRabbit);
+  AnimalLoop(cloneCrocodile);
+}
+
+void CallBackLytOnClick;
+{
+  animalLoopTimer.Enabled = True;
+}
+
+void StartGame;
+{
+MyForm = TclGameForm.Create(Self);
+
+MyForm.SoundIsActive = True;
+
+MyForm.SetFormBGImage('bg3.png');
+
+showAnimalImgCreate = False;
+
+ClRTSetProperty(MyForm,'ClientWidth',1920);
+ClRTSetProperty(MyForm,'ClientHeight',1080);
+
+topLyt = MyForm.AddNewLayout(MyForm,'topLyt');
+topLyt.Align = alMostTop;
+topLyt.Height = 100;
+
+downArrow = MyForm.AddNewProImage(topLyt,'downArrow');
+downArrow.Width = 300;
+downArrow.Height = 100;
+MyForm.setImage(downArrow,'arrow.png');
+clComponent.SetupComponent(downArrow,'{"Align" : "Center"}');
+
+bear = MyForm.AddNewProImage(MyForm,'bear');
+MyForm.setImage(bear,'bear2.png');
+clComponent.SetupComponent(bear,'{"Align" : "None"}');
+bear.Position.X = 0;
+bear.Position.Y = (MyForm.ClHeight/2) + 50;
+bear.Width = 100;
+bear.Height = 100;
+
+dog = MyForm.AddNewProImage(MyForm,'dog');
+MyForm.setImage(dog,'dog2.png');
+clComponent.SetupComponent(dog,'{"Align" : "None"}');
+dog.Position.X = bear.Position.X - bear.Width - 60;
+dog.Position.Y = bear.Position.Y + bear.Height + 60;
+dog.Width = 100;
+dog.Height = 100;
+
+rabbit = MyForm.AddNewProImage(MyForm,'rabbit');
+MyForm.setImage(rabbit,'rabbit2.png');
+clComponent.SetupComponent(rabbit,'{"Align" : "None"}');
+rabbit.Position.X = dog.Position.X - dog.Width - 60;
+rabbit.Position.Y = dog.Position.Y + dog.Height + 60;
+rabbit.Width = 100;
+rabbit.Height = 100;
+
+horse = MyForm.AddNewProImage(MyForm,'horse');
+MyForm.setImage(horse,'horse2.png');
+clComponent.SetupComponent(horse,'{"Align" : "None"}');
+horse.Position.X = rabbit.Position.X - rabbit.Width - 60;
+horse.Position.Y = rabbit.Position.Y + rabbit.Height + 60;
+horse.Width = 100;
+horse.Height = 100;
+
+frog = MyForm.AddNewProImage(MyForm,'frog');
+MyForm.setImage(frog,'frog2.png');
+clComponent.SetupComponent(frog,'{"Align" : "None"}');
+frog.Position.X = horse.Position.X - horse.Width - 60;
+frog.Position.Y = horse.Position.Y + horse.Height + 60 ;
+frog.Width = 100;
+frog.Height = 100;
+
+penguin = MyForm.AddNewProImage(MyForm,'penguin');
+MyForm.setImage(penguin,'penguin2.png');
+clComponent.SetupComponent(penguin,'{"Align" : "None"}');
+penguin.Position.X = frog.Position.X - frog.Width - 60;
+penguin.Position.Y = frog.Position.Y + frog.Height + 60;
+penguin.Width = 100;
+penguin.Height = 100;
+
+squirrel = MyForm.AddNewProImage(MyForm,'squirrel');
+MyForm.setImage(squirrel,'squirrel2.png');
+clComponent.SetupComponent(squirrel,'{"Align" : "None"}');
+squirrel.Position.X = penguin.Position.X - penguin.Width - 60;
+squirrel.Position.Y = penguin.Position.Y + penguin.Height + 60;
+squirrel.Width = 100;
+squirrel.Height = 100;
+
+crocodile = MyForm.AddNewProImage(MyForm,'crocodile');
+MyForm.setImage(crocodile,'crocodile2.png');
+clComponent.SetupComponent(crocodile,'{"Align" : "None"}');
+crocodile.Position.X = squirrel.Position.X - squirrel.Width - 60;
+crocodile.Position.Y = squirrel.Position.Y + squirrel.Height + 60;
+crocodile.Width = 100;
+crocodile.Height = 100;
+
+cat = MyForm.AddNewProImage(MyForm,'cat');
+MyForm.setImage(cat,'cat_2.png');
+clComponent.SetupComponent(cat,'{"Align" : "None"}');
+cat.Position.X = crocodile.Position.X - crocodile.Width - 60;
+cat.Position.Y = crocodile.Position.Y + crocodile.Height + 60;
+cat.Width = 100;
+cat.Height = 100;
+
+cloneBear = MyForm.AddNewProImage(MyForm,'cloneBear');
+MyForm.setImage(cloneBear,'bear2.png');
+clComponent.SetupComponent(cloneBear,'{"Align" : "None"}');
+cloneBear.Position.X = cat.Position.X - cat.Width - 60;
+cloneBear.Position.Y = cat.Position.Y + cat.Height + 60;
+cloneBear.Width = 100;
+cloneBear.Height = 100;
+
+cloneRabbit = MyForm.AddNewProImage(MyForm,'cloneRabbit');
+MyForm.setImage(cloneRabbit,'rabbit2.png');
+clComponent.SetupComponent(cloneRabbit,'{"Align" : "None"}');
+cloneRabbit.Position.X = cloneBear.Position.X - cloneBear.Width - 60;
+cloneRabbit.Position.Y = cloneBear.Position.Y + cloneBear.Height + 60;
+cloneRabbit.Width = 100;
+cloneRabbit.Height = 100;
+
+cloneCrocodile = MyForm.AddNewProImage(MyForm,'cloneCrocodile');
+MyForm.setImage(cloneCrocodile,'crocodile2.png');
+clComponent.SetupComponent(cloneCrocodile,'{"Align" : "None"}');
+cloneCrocodile.Position.X = cloneRabbit.Position.X - cloneRabbit.Width - 60;
+cloneCrocodile.Position.Y = cloneRabbit.Position.Y + cloneRabbit.Height + 60;
+cloneCrocodile.Width = 100;
+cloneCrocodile.Height = 100;
+
+platformImg = MyForm.AddNewProImage(MyForm,'platformImg');
+platformImg.Align = alCenter;
+MyForm.setImage(platformImg,'platform.png');
+platformImg.Margins.Top = 300;
+platformImg.Height = 400;
+platformImg.Width = 600;
+
+bottomLyt = MyForm.AddNewLayout(MyForm,'bottomLyt');
+bottomLyt.Align = alBottom;
+bottomLyt.Height = 200;
+bottomLyt.Margins.Bottom = 100;
+
+selectBtn = MyForm.AddNewProButton(bottomLyt,'selectBtn','');
+MyForm.setImage(selectBtn,'select.png');  
+clComponent.SetupComponent(selectBtn,'{"Align" : "Center"}');
+selectBtn.Width = 300;
+selectBtn.Height = 200;
+MyForm.AddNewEvent(selectBtn, tbeOnClick, 'selectBtnOnClick');
+MyForm.AddNewEvent(MyForm, tbeOnKeyDown,'MyFormOnKeyDown');
+
+animalLoopTimer = MyForm.AddNewTimer(MyForm,'animalLoopTimer',10); // the action is triggered every 1 second.
+animalLoopTimer.Enabled = True; //If False start timer
+MyForm.AddNewEvent(animalLoopTimer,tbeOnTimer,'timerShow'); // Calls timerShow Procedure
+
+callBackLyt = MyForm.AddNewLayout(MyForm,'callBackLyt');
+callBackLyt.Visible = False;
+MyForm.AddNewEvent(callBackLyt,tbeOnClick,'CallBackLytOnClick');
+
+MyForm.RunModal;
+}
+
+void GetAssets
+{
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200562468120956938/penguin2.png'); // 6
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200569442380304414/squirrel2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200588041241231420/crocodile2.png'); //8
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200861261890592949/bg3.png'); //9
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200786291101544558/platform.png');// 11
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200846791894126705/dog2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200846792284184646/bear2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200846792691044433/cat_2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200846794012250253/rabbit2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200846793655730196/horse2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200846793144016966/frog2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200832014597759079/select.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200835232849465484/arrow.png');
+  // wav Assets
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200492297956106312/bear.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200492298660749322/cat.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200492243409186966/horse.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200492245120450711/penguin.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200492297255665785/aligator.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200894230898429973/frog.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200899276281221140/squirrel.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200900054068756720/rabbit.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200492296093843486/dog.wav');
+  // Bilal Assets
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200506465820094474/cat1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200547833011515442/cat2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200797900863721563/jump_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200602367087890532/bulutlar.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994750/1200437761455444078/zemin1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200535590710550709/chicken2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765516634148925/meat_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765514742509618/apple_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765516936118322/slipper_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765516390871060/trash_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765517191983154/wheels_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765516155977728/material_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765515002564690/banana_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765515254202459/carrot_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765515908534394/fish_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200765515510067200/chicken_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200954219503566899/beardance_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200525424753639444/dog.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200525425017884682/frog.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200525425244381425/horse.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200525425462480976/rabbit.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200561890712109116/penguin_2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200569021611909233/squirrel.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200587373373825074/crocodile.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200827261591498782/bear1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200827261843144804/crocodile1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200827262099017739/dog1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200827262405193779/frog1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200827262778474566/horse1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200827263122427914/penguin1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200827263571210391/rabbit1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200827263965462538/squirrel1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200856815991279616/1_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200856816180015234/2_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200856816427483226/3_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200856816670756994/4_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200856817006293022/5_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200856817631252490/6.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200856817975177316/7.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200856818377834546/8.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200490902876069928/eatingSounds.wav');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200866814222151821/beardance.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200889605751308378/crocodiledance.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200899675604127744/horsedance.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200916641941299261/rabbitdance.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200920469780582501/dogdance.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200939234664652860/catdance.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200788189535797258/penguindance.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200928789375484064/sincapdans.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200943078022856745/frogdance.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200910837477556326/gameover.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1200910837204910242/win.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200490977245282314/1200528745816142004/gokyuzu.png');
+  
+  // Sound Assets
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200492393586237482/saxophone.wav'); // lose
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200430161082994752/1200492394982952990/trumpet.wav');   // win 
+  
+  //LAST Assets
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201109753808560199/sincap.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201109754181845012/sincap2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201108362587295774/tavsan.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://media.discordapp.net/attachments/1200524086187663421/1201105533852196915/kurbaga2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://media.discordapp.net/attachments/1200524086187663421/1201105534426808360/kurbaga3.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://media.discordapp.net/attachments/1200524086187663421/1201107577837203528/at1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://media.discordapp.net/attachments/1200524086187663421/1201107578244042792/at2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://media.discordapp.net/attachments/1200524086187663421/1201107594450841650/timsah.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://media.discordapp.net/attachments/1200524086187663421/1201107594761211944/timsah2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201112087783551026/ay_1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201112088194588702/ay.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201100720657662012/snow1.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201100721085493289/snow2.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201101857955782716/snow3.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201114206578163712/kopek.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201117713322475561/cat_background.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201117519285596281/cat_street.png');
+  MyLoadingForm.AddGameAssetFromUrl('https://cdn.discordapp.com/attachments/1200524086187663421/1201117831421505546/dog_BackGround.png');
+  
+  
+}
+  
+void loadingTmrTick
+{
+  Inc(tickCount);
+  if (tickCount == 1)
+    loadingLbl.Text = 'Loading.'
+  else if (tickCount == 2)
+    loadingLbl.Text = 'Loading..'
+  else if (tickCount == 3)
+    loadingLbl.Text = 'Loading...'
+  else
+  {
+    loadingLbl.Text = 'Loading';
+    tickCount = 0;
+  }
+}
+
+void StartLoading;
+{
+  tickCount=0;
+  loadingPnl = MyLoadingForm.AddNewProPanel(MyLoadingForm,'loadingPnl');
+  clComponent.SetupComponent(loadingPnl,'{"Align" : "Contents","BackgroundColor":"#000000"}');
+  
+  loadingTmr= MyLoadingForm.AddNewTimer(MyLoadingForm,'loadingTmr',1000);
+  MyLoadingForm.AddNewEvent(loadingTmr,tbeOnTimer,'loadingTmrTick'); // Calls timerShow Procedure
+
+  loadingLbl = MyLoadingForm.AddNewProLabel(loadingPnl,'loadingLbl','Loading');
+  clComponent.SetupComponent(loadingLbl,'{"Align" : "Client","Width" :'+FloatToStr(MyLoadingForm.clWidth/2)+', "Height":'+FloatToStr(MyLoadingForm.clHeight/2)+',"TextColor":"#ffffff","TextSize":40,"TextVerticalAlign":"center", "TextHorizontalAlign":"center","TextBold":"yes"}');  
+
+  loadingTmr.Enabled = True; //If True start timer
+  
+  GetAssets;
+}
+  
+void EndLoading;  
+{
+  loadingTmr.Enabled = false;
+  tickCount = 0;
+  GetTimer.Enabled = False;
+  StartGame;
+  MyLoadingForm.clHide;
+}
+
+{
+  MyLoadingForm = TclGameForm.Create(Self);
+  MyLoadingForm.ClsetWindowstate(fwsMaximized);
+  //ClRTSetProperty(MyLoadingForm,'ClientWidth',1920);
+  //ClRTSetProperty(MyLoadingForm,'ClientHeight',1010)
+  
+  StartLoading;
+  
+  GetTimer = MyLoadingForm.AddNewTimer(MyLoadingForm,'GetTimer',3000);
+  GetTimer.Enabled = True;
+  MyLoadingForm.AddNewEvent(GetTimer,tbeOnTimer,'EndLoading'); // Calls timerShow Procedure
+  
+  MyLoadingForm.Run;
+}
